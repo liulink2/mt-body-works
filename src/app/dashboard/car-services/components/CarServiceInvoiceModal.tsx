@@ -6,10 +6,9 @@ import {
   CarOutlined,
 } from "@ant-design/icons";
 import dayjs from "dayjs";
-import React, { useMemo } from "react";
+import React from "react";
 import { CarService, CarServiceItem } from "../types";
 import { CompanySettings } from "@/contexts/CompanySettingsContext";
-import { ServiceType } from "@prisma/client";
 
 interface CarServiceInvoiceModalProps {
   isInvoiceModalVisible: boolean;
@@ -26,15 +25,6 @@ const CarServiceInvoiceModal: React.FC<CarServiceInvoiceModalProps> = ({
   companySettings,
   handlePrint,
 }) => {
-  // Memoize the service items array to prevent unnecessary re-renders
-  const serviceItems = useMemo(() => {
-    if (!selectedCarService) return [];
-    return selectedCarService.carServiceItems.map((item: CarServiceItem) => ({
-      name: item.name,
-      serviceType: item.serviceType as ServiceType,
-    }));
-  }, [selectedCarService]);
-
   return (
     <Modal
       open={isInvoiceModalVisible}
