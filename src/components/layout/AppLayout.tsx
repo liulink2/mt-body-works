@@ -9,9 +9,7 @@ import {
   ShoppingCartOutlined,
   DollarOutlined,
   CarOutlined,
-  InfoCircleOutlined,
   HistoryOutlined,
-  InboxOutlined,
 } from "@ant-design/icons";
 import { useSession, signOut } from "next-auth/react";
 import { useRouter, usePathname } from "next/navigation";

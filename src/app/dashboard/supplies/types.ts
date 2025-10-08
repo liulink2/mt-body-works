@@ -30,7 +30,6 @@ export interface Supply {
   paymentType: "CASH" | "CARD";
   remarks?: string;
   suppliedDate: string;
-  mappedNames: string[];
   createdAt: string;
   updatedAt: string;
 }
