@@ -54,12 +54,6 @@ export default function AppLayout({ children }: AppLayoutProps) {
       onClick: () => router.push("/dashboard/supplies"),
     },
     {
-      key: "inventory",
-      icon: <InboxOutlined />,
-      label: "Inventory",
-      onClick: () => router.push("/dashboard/inventory"),
-    },
-    {
       key: "expenses",
       icon: <DollarOutlined />,
       label: "Expenses",
@@ -76,12 +70,6 @@ export default function AppLayout({ children }: AppLayoutProps) {
       icon: <HistoryOutlined />,
       label: "Customer History",
       onClick: () => router.push("/dashboard/customer-history"),
-    },
-    {
-      key: "service-extra-info",
-      icon: <InfoCircleOutlined />,
-      label: "Service Extra Info",
-      onClick: () => router.push("/dashboard/service-extra-info"),
     },
   ];
 

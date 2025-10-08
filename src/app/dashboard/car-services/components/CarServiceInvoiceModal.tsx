@@ -9,7 +9,6 @@ import dayjs from "dayjs";
 import React, { useMemo } from "react";
 import { CarService, CarServiceItem } from "../types";
 import { CompanySettings } from "@/contexts/CompanySettingsContext";
-import { useServiceExtraInfo } from "@/lib/service-extra-info";
 import { ServiceType } from "@prisma/client";
 
 interface CarServiceInvoiceModalProps {
@@ -36,11 +35,8 @@ const CarServiceInvoiceModal: React.FC<CarServiceInvoiceModalProps> = ({
     }));
   }, [selectedCarService]);
 
-  const { extraInfoMap, loading } = useServiceExtraInfo(serviceItems);
-
   return (
     <Modal
-      loading={loading}
       open={isInvoiceModalVisible}
       onCancel={() => setIsInvoiceModalVisible(false)}
       footer={[
@@ -129,22 +125,6 @@ const CarServiceInvoiceModal: React.FC<CarServiceInvoiceModalProps> = ({
                             ${item.totalAmount.toFixed(2)}
                           </td>
                         </tr>
-                        {extraInfoMap.get(item.name) && (
-                          <tr
-                            className={
-                              index % 2 === 0 ? "bg-white" : "bg-gray-50"
-                            }
-                          >
-                            <td
-                              colSpan={4}
-                              className="p-2 text-sm text-gray-600 italic"
-                            >
-                              <div className="whitespace-pre-line">
-                                {extraInfoMap.get(item.name)}
-                              </div>
-                            </td>
-                          </tr>
-                        )}
                       </React.Fragment>
                     )
                   )}

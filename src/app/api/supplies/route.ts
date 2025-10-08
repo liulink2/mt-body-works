@@ -9,7 +9,6 @@ export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;
     const month = searchParams.get("month");
     const year = searchParams.get("year");
-    const includeSettled = searchParams.get("includeSettled") === "true";
 
     const where = {
       ...(month && year
@@ -18,7 +17,6 @@ export async function GET(request: NextRequest) {
             year: parseInt(year),
           }
         : {}),
-      ...(includeSettled ? {} : { settled: false }),
     };
 
     const supplies = await prisma.supply.findMany({

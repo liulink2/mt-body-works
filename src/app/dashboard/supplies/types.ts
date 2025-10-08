@@ -31,7 +31,6 @@ export interface Supply {
   remarks?: string;
   suppliedDate: string;
   mappedNames: string[];
-  settled: boolean;
   createdAt: string;
   updatedAt: string;
 }

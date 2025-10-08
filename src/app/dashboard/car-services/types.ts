@@ -5,7 +5,6 @@ export interface CarServiceItem {
   price: number;
   quantity: number;
   totalAmount: number;
-  settled: boolean;
 }
 
 export interface CarService {

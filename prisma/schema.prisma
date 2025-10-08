@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,41 +7,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Role {
-  ADMIN
-  MANAGER
-}
-
-enum PaymentType {
-  CASH
-  CARD
-}
-
-enum ServiceType {
-  SERVICE
-  PARTS
-}
-
-enum DiscountType {
-  PERCENTAGE
-  FIXED
-}
-
 model Account {
   id                String  @id @default(cuid())
   userId            String
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
+  refresh_token     String?
+  access_token      String?
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? @db.Text
+  id_token          String?
   session_state     String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -68,10 +41,10 @@ model User {
   image     String?
   role      Role      @default(MANAGER)
   isActive  Boolean   @default(true)
-  accounts  Account[]
-  sessions  Session[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+  accounts  Account[]
+  sessions  Session[]
 
   @@index([username])
 }
@@ -89,10 +62,10 @@ model Supplier {
   name      String
   isActive  Boolean    @default(true)
   parentId  String?
-  parent    Supplier?  @relation("SupplierHierarchy", fields: [parentId], references: [id])
-  children  Supplier[] @relation("SupplierHierarchy")
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
+  parent    Supplier?  @relation("SupplierHierarchy", fields: [parentId], references: [id])
+  children  Supplier[] @relation("SupplierHierarchy")
   supplies  Supply[]
 
   @@index([parentId])
@@ -101,7 +74,6 @@ model Supplier {
 model Supply {
   id            String      @id @default(cuid())
   supplierId    String
-  supplier      Supplier    @relation(fields: [supplierId], references: [id])
   invoiceNumber String
   name          String
   description   String?
@@ -114,10 +86,9 @@ model Supply {
   suppliedDate  DateTime
   month         Int
   year          Int
-  mappedNames   String[]    @default([])
-  settled       Boolean     @default(false)
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
+  supplier      Supplier    @relation(fields: [supplierId], references: [id])
 
   @@index([month, year])
 }
@@ -129,7 +100,7 @@ model Expense {
   month       Int
   year        Int
   amount      Float
-  paymentType String   // CASH or CARD
+  paymentType String
   description String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -138,51 +109,60 @@ model Expense {
 }
 
 model CarServiceItem {
-  id            String      @id @default(cuid())
-  serviceType   ServiceType
-  name          String
-  price         Float
-  quantity      Int
-  totalAmount   Float
-  carServiceId  String
-  carService    CarService  @relation(fields: [carServiceId], references: [id])
-  settled       Boolean     @default(false)
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
-}
-
-model ServiceExtraInfo {
-  id              String      @id @default(cuid())
-  serviceType     ServiceType
-  serviceNames    String[]    // Array of service names to match against
-  extraInfo       String      @db.Text
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
+  id           String      @id @default(cuid())
+  serviceType  ServiceType
+  name         String
+  price        Float
+  quantity     Int
+  totalAmount  Float
+  carServiceId String
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  carService   CarService  @relation(fields: [carServiceId], references: [id])
 }
 
 model CarService {
-  id            String          @id @default(cuid())
-  carPlate      String
-  carDetails    String?
-  ownerName     String?
-  phoneNo       String
-  carInDateTime DateTime
-  carOutDateTime DateTime?
-  totalAmount   Float
-  discountType  DiscountType?
-  discountAmount Float?
-  finalAmount   Float
-  gstAmount     Float?
-  paidInCash    Float?
-  paidInCard    Float?
-  year          Int
-  month         Int
-  odo           Int?
-  isInvoiceIssued Boolean       @default(false)
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
-
+  id              String           @id @default(cuid())
+  carPlate        String
+  carDetails      String?
+  ownerName       String?
+  phoneNo         String
+  carInDateTime   DateTime
+  carOutDateTime  DateTime?
+  totalAmount     Float
+  discountType    DiscountType?
+  discountAmount  Float?
+  finalAmount     Float
+  gstAmount       Float?
+  paidInCash      Float?
+  paidInCard      Float?
+  year            Int
+  month           Int
+  odo             Int?
+  isInvoiceIssued Boolean          @default(false)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
   carServiceItems CarServiceItem[]
 
   @@index([year, month])
+}
+
+enum Role {
+  ADMIN
+  MANAGER
+}
+
+enum PaymentType {
+  CASH
+  CARD
+}
+
+enum ServiceType {
+  SERVICE
+  PARTS
+}
+
+enum DiscountType {
+  PERCENTAGE
+  FIXED
 }
