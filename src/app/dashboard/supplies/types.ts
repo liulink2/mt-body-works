@@ -29,7 +29,7 @@ export interface Supply {
   gstAmount: number;
   paymentType: "CASH" | "CARD";
   remarks?: string;
-  suppliedDate: string;
+  suppliedDate: Dayjs;
   createdAt: string;
   updatedAt: string;
 }
