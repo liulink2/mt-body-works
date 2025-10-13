@@ -194,6 +194,7 @@ export default function ExpenseManagementPage() {
 
   const handleCancel = () => {
     setIsModalVisible(false);
+    setEditingExpense(null);
     expenseForm.resetFields();
   };
 
@@ -231,6 +232,7 @@ export default function ExpenseManagementPage() {
       );
 
       setIsModalVisible(false);
+      setEditingExpense(null);
       expenseForm.resetFields();
       fetchExpenses(date);
     } catch {
