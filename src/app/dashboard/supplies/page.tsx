@@ -39,6 +39,7 @@ export default function SupplyManagementPage() {
   const [addForm] = Form.useForm();
   const [editForm] = Form.useForm();
   const [uploading, setUploading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   // Custom hooks
   const { date, setDate, supplies, loading, fetchSupplies } =
@@ -84,6 +85,7 @@ export default function SupplyManagementPage() {
 
   const handleSubmit = async (values: SupplyFormValues) => {
     try {
+      setSubmitting(true);
       const items = values.items.map((item) => ({
         invoiceNumber: values.invoiceNumber,
         supplierId: values.supplierId,
@@ -109,6 +111,8 @@ export default function SupplyManagementPage() {
       fetchSupplies(date);
     } catch {
       message.error("Failed to create supplies");
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -153,6 +157,7 @@ export default function SupplyManagementPage() {
   const handleEditSubmit = async (values: Supply) => {
     if (!editingSupply) return;
     try {
+      setSubmitting(true);
       const response = await fetch(`/api/supplies/${editingSupply.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -164,6 +169,8 @@ export default function SupplyManagementPage() {
       fetchSupplies(date);
     } catch {
       message.error("Failed to update supply");
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -289,6 +296,7 @@ export default function SupplyManagementPage() {
         suppliers={suppliers}
         loading={loading}
         uploading={uploading}
+        submitting={submitting}
         handleUpload={handleUpload}
         addForm={addForm}
         handleValuesChange={handleValuesChange}
@@ -299,6 +307,7 @@ export default function SupplyManagementPage() {
         onSubmit={handleEditSubmit}
         suppliers={suppliers}
         loading={loading}
+        submitting={submitting}
         editForm={editForm}
         handleEditValuesChange={handleEditValuesChange}
         editingSupply={editingSupply}
