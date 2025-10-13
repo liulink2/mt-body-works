@@ -19,6 +19,7 @@ interface EditSupplyModalProps {
   onSubmit: (values: Supply) => void;
   suppliers: Supplier[];
   loading: boolean;
+  submitting: boolean;
   editForm: FormInstance<Supply>;
   handleEditValuesChange: (
     changedValues: Partial<Supply>,
@@ -33,6 +34,7 @@ export const EditSupplyModal: React.FC<EditSupplyModalProps> = ({
   onSubmit,
   suppliers,
   loading,
+  submitting,
   editForm,
   handleEditValuesChange,
   editingSupply,
@@ -147,10 +149,10 @@ export const EditSupplyModal: React.FC<EditSupplyModalProps> = ({
       </Form.Item>
       <Form.Item className="flex justify-end">
         <Space>
-          <Button danger onClick={onCancel}>
+          <Button danger onClick={onCancel} disabled={submitting}>
             Cancel
           </Button>
-          <Button type="primary" htmlType="submit" loading={loading}>
+          <Button type="primary" htmlType="submit" loading={submitting}>
             Update
           </Button>
         </Space>
