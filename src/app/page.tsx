@@ -17,7 +17,7 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen p-8">
-      <Card title="Welcome to MK Auto" className="max-w-md mx-auto">
+      <Card title="Welcome to MT Body Works" className="max-w-md mx-auto">
         <div className="space-y-4">
           <p className="text-center text-gray-600">
             Please log in to access the system
